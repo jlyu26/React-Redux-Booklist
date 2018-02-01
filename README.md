@@ -80,6 +80,6 @@ Once all the reducers have processed the action and return a new/current state, 
 
 **8. Data flow**
 
-![dataflow](https://user-images.githubusercontent.com/20265633/35706574-491c1a48-0774-11e8-97e4-f2481c306347.jpg)
+Diagram to be adjusted...
 
 
