@@ -33,7 +33,7 @@ combineReducers() [(Document)](https://redux.js.org/docs/api/combineReducers.htm
 ```jsx
 const rootReducer = combineReducers({	// centralize all of the application's data/state inside of a single object
   books: BooksReducer,
-  // anotherKey: AnotherReducer
+  activeBook: ActiveBook
   // ...
 });
 
@@ -58,6 +58,28 @@ Whenever we make a container file, we want to export the container (produced by 
 
 connect()() takes a function and a component, and produces a container.
 
-**5. Trace the flow of application**
+**5. Trace the flow of application** (before add action)
 
 Reducer generated states object --> State function (mapStateToProps() in book-list.js)  mapped the state as props to component --> During the process state updated, so component rerender the list of books.
+
+**6. Actions**
+
+The lifecycle of an action and Redux application:
+
+<img width="624" alt="actions" src="https://user-images.githubusercontent.com/20265633/35644170-40e1e09e-0696-11e8-8bde-e6d6d1d62720.PNG">
+
+Action starts off with an event triggerd directly by user interaction or indirectly like Ajax request finishing loading up, or page initially loading up. These events can optionally call(调用) an **action creater**. An action creater is a function that returns an action. As in diagram, the action creater returns an object. (The action object has a "type" that describes the type/purpose of action that was just triggered, and the action can also have some data that future describes the action. In this case we have the property "book" that contains the actual selected book.) 
+
+The object then automatically sent to **all reducers** inside application. Reducers can choose different piece of state, depending on what the action is, and return it. (Inside all our reducers we usually set up a switch statement, which will go to a different line depending on the "type" of action. A reducer doesn't have to react to every different action. And if the reducer doesn't react to an action, it returns the current state, and no status change for that particualr reducer.) 
+
+Then the returned state got piped into the application state. (In this case, ActiveBook reducer returns `action.book`. Because ActiveBook reducer is wired up to the activeBook key on state (see rootReducer() in index.js), it pops up as the new value of the state. In another word, whatever returnd from the reducer ends up as new value of the state.) 
+
+Once all the reducers have processed the action and return a new/current state, the application state gets pumped back into all the different containers. Then all of the containers will run the function `mapStateToProps()`, that state will get dissected and injected into all those containers, and all those containers will rerender with the updated state.
+
+**7. bindActionCreators()**
+
+**8. Data flow**
+
+![dataflow](https://user-images.githubusercontent.com/20265633/35706574-491c1a48-0774-11e8-97e4-f2481c306347.jpg)
+
+
